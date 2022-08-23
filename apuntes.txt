@@ -1,0 +1,30 @@
+
+ victor_12@dominio.com
+ victor_12@empresa.com
+
+ doncente@uagrm.edu.bo
+
+ ana_21@yahoo.com
+ otto.gonzales@outlook.com
+ enrique-123@hotmail.com
+ yolanda_11@gmail.com
+
+
+SISTEMAS OPERATIVOS FORMATO ISO:
+Ubuntu 20.04.4 LTE : https://releases.ubuntu.com/20.04/
+FEDORA SERVER 36: https://getfedora.org/es/server/download/
+
+===========================================================
+DNS
+ruta file "/etc/named.conf"
+
+zone "empresa.com" {
+        type master;
+        file "/var/named/db.empresa.com";
+};
+
+zone "30.20.10.in-addr.arpa" {
+        type master;
+        file "/var/named/rev.empresa.com";
+};
+===========================================================
