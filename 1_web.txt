@@ -104,11 +104,11 @@ ACCESO REMOTO A phpMyAdmin (CONFIGURACION PARA ACCEDER AL phpMyAdmin DESDE LA RE
   :wq   --->salir y guardar cambios
   :q!   --->salir sin guardar (si haces un error)
 
-  #sudo systemctl restart httpd   -->REINICIAR SERVICIOS DE APACHE
+  # sudo systemctl restart httpd   -->REINICIAR SERVICIOS DE APACHE
 
   LISTO!!!
   AHORA INGRESA A SGTE ENLACE EN NAVEGADOR PARA VER SI FUNCIONA:
-  https://localhost/phpmyadmin/
+  http://localhost/phpmyadmin/
 
 ===================================================================================
   INSTALAR GIT Y SUBIR PROYECTO:
@@ -119,15 +119,15 @@ ACCESO REMOTO A phpMyAdmin (CONFIGURACION PARA ACCEDER AL phpMyAdmin DESDE LA RE
   $ git --version			-->GIT VERSION
 --------------------------- CLONAR REPOSITORIO -------------------------------
   # cd /var/www/html
-  # git clone https://github.com/kikeProgramer007/crudpersonaTW.git
-  # cd crudpersonaTW
+  # git clone https://github.com/kikeProgramer007/empleadophp.git
+  # cd empleadophp
   # mv * /var/www/html
   # cd ..
-  # sudo rm -r CrudphpPuroTecnoweb
+  # sudo rm -r empleadophp
   # ls -l -a
 
 
-  vi scripTables.txt     -->COPIAR SCRIP AL PHPMYADMIN DENTRO DE LA BASE DE DATOS Q TENEMOS
+  vi tablas.txt     -->COPIAR SCRIP AL PHPMYADMIN DENTRO DE LA BASE DE DATOS Q TENEMOS
   ESC
   :q!			 -->Salir sin guardar
   :wq                    -->salir y guardar cambios
