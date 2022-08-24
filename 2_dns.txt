@@ -41,21 +41,20 @@ zone "30.20.10.in-addr.arpa" {
 nano cd/var/named/db.empresa.com"
 =========================================================
 $TTL 604800
-@	IN	SOA empresa.com	admin.empresa.com. (
+@	IN	SOA empresa.com admin.empresa.com. (
 	20220605	;serial
- 	604800		;refresh
+	604800		;refresh
 	86400		;retry
- 	2419200		;expire
+	2419200		;expire
 	604800 )	;TTL  negativo
 
-IN	NS	fedora.empresa.com.
+	IN	NS	fedora.empresa.com.
 fedora	IN	A	10.20.30.6
 correo	IN	A	10.20.30.6
 
-ns1	IN	CNAME		fedora
-www	IN	CNAME		fedora
+sub	IN	CNAME	fedora
+www	IN	CNAME	fedora
 @	IN	MX	10	correo
-
 
 
 =================== 4TA CONFIGURACION ===================
@@ -69,9 +68,34 @@ $TTL 604800
 	2419200		;expire
 	604800 )	;TTL  negativo
 
-	IN	NS	fedora.panaderia.com.
-6	IN	PTR	fedora.panaderia.com.
-6	IN	PTR	correo.panaderia.com.
+	IN	NS	fedora.empresa.com.
+6	IN	PTR	fedora.empresa.com.
+6	IN	PTR	correo.empresa.com.
 
+
+=================== 5TA CONFIGURACION ===================
+nano /etc/resolv.conf
 =========================================================
-
+...
+nameserver 10.20.30.6
+...
+=========================================================
+DAR PERMISOS DE AL FIREWALL PARA UTILIZAR EL DNS
+# firewall-cmd --permanent --add-service=dns
+# firewall-cmd --permanent --add-service=http
+# firewall-cmd --permanent --add-service= https
+=========================================================
+HABILITAMOS LOS SGTES PUERTOS:
+# firewall-cmd –permanent –add-port=53/tcp
+# firewall-cmd –permanent –add-port=53/udp
+# firewall-cmd –permanent –add-port=80/tcp
+# firewall-cmd –permanent –add-port=80/udp
+=========================================================
+FINALMENTE INICIAMOS EL SERVICIO:
+# systemctl enable named
+# systemctl start named
+=========================================================
+REINICIAMOS ALGUNO FIREWALL,NETWORK Y BIND:
+# firewall-cdm --reload
+# sudo systemctl restart NetworkManager.service
+# systemctl restart named

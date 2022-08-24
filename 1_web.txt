@@ -1,0 +1,40 @@
+ ==========================================================
+ INGRESAR MODO ADMINISTRADOR:
+
+  sudo su
+  $---->#
+------------------------------------------------------
+  ACTUALIZAR EL SISTEMA OPERATIVO:
+
+  # yum update   ---> PARA ACTUALIZAR
+  # s            ---> ACEPTAMOS
+  # sudo dnf upgrade --refresh -y
+===================================================================================
+  INSTALAR EL APACHE (UN SERVIDOR DE PAGINA WEB):
+
+  # yum install httpd -y    		-->INSTALAR APACHE (-y = NO PREGUNTA CONFIRMACION)
+  # sudo systemctl enable httpd		-->HABILITAR APACHE
+  # sudo systemctl start httpd		-->INICIA EL APACHE
+  # systemctl status httpd  		-->PARA VER EL ESTADO DEL APACHE
+    Ctrl+c          			-->PARA SALIR DE STATUS
+
+  Nos dirigimos a un navegador web y entramos en http://localhost
+
+===================================================================================
+  INSTALAR MYSQL (MariaDB):
+
+  # sudo yum -y install httpd mariadb-server    --> COMANDO PARA INSTALAR MARIA DB
+  # sudo systemctl enable --now mariadb httpd   -->COMANDO QUE PONE 100PRE ACTIVO
+  # sudo systemctl start mariadb                -->INICIAR MARIA DB
+  # systemctl status mariadb		   	-->VER ESTADO DE MYSQL
+    ¡Listo!
+
+  # mysql -u root                		-->ABRIR MYSQL
+
+  mysql> SHOW databases;                	-->MUESTRA LAS BASE DE DATOS
+  mysql> CREATE DATABASE dbproductos;   		-->CREAMOS UNA BASE DE DATOS CON NOMBRE dbpersonal
+  mysql> CREATE USER 'enrique'@'localhost' IDENTIFIED BY '12345';   	   -->CREAMOS UN USUARIO MAS SU CONTRASEÑA
+  mysql> GRANT ALL PRIVILEGES ON dbproductos.* TO 'enrique'@'localhost';    -->OTORGAR TODOS LOS PERMISOS AL USUARIO
+  mysql> FLUSH PRIVILEGES;           -		->EJECUTAR DICHOS PRIVILEGIOS
+  mysql>exit            			--> PARA SALIR DE MARIADB
+
