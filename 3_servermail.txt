@@ -1,0 +1,56 @@
+
+============================================================================
+ESTABLECER ZONA PARA EL CORREO:
+============================================================================
+# nano /var/named/db.empresa.com
+
+============================================================================
+VERIFICAR QUE SE CONFIGURO BIEN:
+============================================================================
+# named-checkzone empresa.com /var/named/db.empresa.com
+  OK.
+============================================================================
+ESTABLECER ZONA INVERSA PARA EL CORREO:
+============================================================================
+# nano /var/named/rev.empresa.com
+
+============================================================================
+CONGIGURACION DEL MAIN.CF:
+============================================================================
+# nano /etc/postfix/main.cf	--> IR A ESE DIRECTORIO Y ABRIR EL ARCHIVO main.cf
+============================================================================
+#####################  COMENTAR LAS SGTES LINEAS ########################
+============================================================================
+
+#myhostname = host.domain.tld		--> DEBE ESTAR COMENTADO
+#mydomain = domain.tld			--> DEBE ESTAR COMENTADO
+#myorigin = $mydomain			--> DEBE ESTAR COMENTADO
+
+inet_interfaces = localhost		--> LO COMENTAMOS
+#inet_interfaces = localhost		--> ASI DEBE ESTAR	
+
+inet_protocols = all			--> LO COMENTAMOS
+#inet_protocols = all			--> ASI DEBE ESTAR	
+
+mydestination = $myhostname, localhost.$mydomain, localhost			--> COMENTARLO(shif+3)
+#mydestination = $myhostname, localhost.$mydomain, localhost			--> ASI DEBE ESTAR
+#mydestionation = $myhostname, localhost.$mydomain, localhost, $mydomain	--> ASI DEBE ESTAR
+
+unknown_local_recipient_reject_code = 550	--> LO COMENTAMOS		
+#unknown_local_recipient_reject_code = 550	--> ASI DEBE ESTAR
+
+#mynetworks = 168.100.3.0/28, 127.0.0.0/8	--> ASI DEBE ESTAR
+
+#home_mailbox = Maildir/			--> ASI DEBE ESTAR
+
+=====================RESUMEN========================
+myhostname = correo.empresa.com
+mydomain = empresa.com
+myorigin = $mydomain
+inet_interfaces = all
+inet_protocols = all
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+unknown_local_recipient_reject_code = 550
+mynetworks = 10.20.30.0/28, 127.0.0.0/8
+home_mailbox = Maildir/
+====================================================
