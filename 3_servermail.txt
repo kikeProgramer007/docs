@@ -49,7 +49,7 @@ alias_database = hash:/etc/aliases		--> LO COMENTAMOS
 
 #home_mailbox = Maildir/			--> ASI DEBE ESTAR
 
-############################# RESUMEN ################################
+####################### CONFIG SERVER-MAIL ###########################
 myhostname = correo.empresa.com
 mydomain = empresa.com
 myorigin = $mydomain
@@ -62,3 +62,99 @@ alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 home_mailbox = Maildir/
 ######################################################################
+
+============================================================================
+REINICIAR POSTFIX, NETWORK, BIND
+============================================================================
+# systemctl restart postfix.service
+# systemctl restart named.service
+# systemctl restart NetworkManager.service
+# firewal-cmd –reload
+============================================================================
+
+============================================================================
+CREAR USUARIOS
+============================================================================
+# adduser ana
+# passwd ana
+   Nueva Contraseña: ana
+   Vuelva a escribir la contraseña: ana
+# mkdir /home/ana/Maildir			--> CREAR CARPETA PARA ALMACENAR MSM
+# chown ana:ana -R /home/ana/Maildir		--> OTORGAR PERMISOS A USUARIO
+
+=============================================================================================
+ENVIAR MENSAJE
+=============================================================================================
+METODO 1:
+---------------------------------------------------------------------------------------------
+# telnet correo.empresa.com 25		Abrir telnet para enviar mensaje
+ehlo correo.empresa.com
+mail from:ana					--> DE PARTE DE QUIEN ES EL CORREO
+rcpt to:pedro					--> PARA QUE CORREO SE ENVIARÁ
+data						--> COLOCAR COMANDO DATA Y ENTER
+hola este es un mensaje de prueba		--> MENSAJE
+.						--> PUNTO Y ENTER PARA FINALIZAR
+quit						--> SALIR
+
+REVIZAR MENSAJE
+# ll /home/pedro/Maildir/new			--> MOSTRAR MENSAJES
+# cd /home/pedro/Maildir/new			--> RUTA DONDE SE ALMACENAN LOS MSM
+# ll						--> MOSTRAR MENSAJES	
+ 
+LEER MSM con cat o nano o vi
+---------------------------------------------------------------------------------------------
+METODO 2:
+---------------------------------------------------------------------------------------------
+
+$ whoami					--> VER USUARIO ACTUAL
+$ sudo su pedro					--> UTILIZAR USUARIO PEDRO
+
+[pedro@fedora]$ echo “correo de prueba” | sendmail ana@panaderia.com
+
+REVIZAR MENSAJE
+# ll /home/ana/Maildir/new			--> MOSTRAR MENSAJES
+# cd /home/ana/Maildir/new			--> RUTA DONDE SE ALMACENAN LOS MSM
+LEER MSM con cat o nano o vi
+
+$ exit
+
+$ sudo su ana					--> UTILIZAR USUARIO ANA
+[pedro@fedora]$ echo “Subject:correo de prueba” | sendmail pedro@panaderia.com
+
+REVIZAR MENSAJE
+# ll /home/ana/Maildir/new			--> MOSTRAR MENSAJES
+# cd /home/ana/Maildir/new			--> RUTA DONDE SE ALMACENAN LOS MSM
+LEER MSM con cat o nano o vi
+
+---------------------------------------------------------------------------------------------
+ACLARACION:
+---------------------------------------------------------------------------------------------
+echo “Escriba el mensaje” | sendmail ana@empresa.com		--> ENVIA SOLO EL MSM CUERPO
+echo “Subject:Escriba el asunto” | sendmail ana@empresa.com	--> ENVIA SOLO ASUNTO
+# yum install mailx
+echo "Mensaje" | mail -s "Asunto" ana@correo.empresa.com	--> ENVIA EL MENSAJE Y EL ASUNTO
+---------------------------------------------------------------------------------------------
+
+
+
+===========================================================================================
+(CONFIGURACION OPCIONAL) EN MAIN.CF COLOCAR EN LA PARTE FINAL
+===========================================================================================
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+smtpd_client_restrictions = permit_mynetworks, reject_unknown_client, permit
+smtpd_recipient_restrictions = permit_mynetworks, permit_auth_destination, permit_sasl_authenticated, reject_unauth_destination
+
+
+
+
+===========================================================================================
+
+
+
+
+
+
