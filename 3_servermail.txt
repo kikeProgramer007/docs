@@ -41,6 +41,12 @@ unknown_local_recipient_reject_code = 550	--> LO COMENTAMOS
 
 #mynetworks = 168.100.3.0/28, 127.0.0.0/8	--> ASI DEBE ESTAR
 
+alias_maps = hash:/etc/aliases			--> LO COMENTAMOS
+#alias_maps = hash:/etc/aliases			--> ASI DEBE ESTAR	
+
+alias_database = hash:/etc/aliases		--> LO COMENTAMOS
+#alias_database = hash:/etc/aliases		--> ASI DEBE ESTAR	
+
 #home_mailbox = Maildir/			--> ASI DEBE ESTAR
 
 ############################# RESUMEN ################################
@@ -52,5 +58,7 @@ inet_protocols = all
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 unknown_local_recipient_reject_code = 550
 mynetworks = 10.20.30.0/28, 127.0.0.0/8
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
 home_mailbox = Maildir/
 ######################################################################
