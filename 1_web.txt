@@ -32,9 +32,9 @@
   # mysql -u root                		-->ABRIR MYSQL
 
   mysql> SHOW databases;                	-->MUESTRA LAS BASE DE DATOS
-  mysql> CREATE DATABASE dbproductos;   		-->CREAMOS UNA BASE DE DATOS CON NOMBRE dbpersonal
+  mysql> CREATE DATABASE dbempleados;   		-->CREAMOS UNA BASE DE DATOS CON NOMBRE dbpersonal
   mysql> CREATE USER 'enrique'@'localhost' IDENTIFIED BY '12345';   	   -->CREAMOS UN USUARIO MAS SU CONTRASEÑA
-  mysql> GRANT ALL PRIVILEGES ON dbproductos.* TO 'enrique'@'localhost';    -->OTORGAR TODOS LOS PERMISOS AL USUARIO
+  mysql> GRANT ALL PRIVILEGES ON dbempleados.* TO 'enrique'@'localhost';    -->OTORGAR TODOS LOS PERMISOS AL USUARIO
   mysql> FLUSH PRIVILEGES;           -		->EJECUTAR DICHOS PRIVILEGIOS
   mysql>exit            			--> PARA SALIR DE MARIADB
 ===================================================================================
@@ -142,3 +142,28 @@ Probar con http://10.0.2.4/phpmyadmin desde la otra maquina
 
  FIN...................
 
+
+
+
+
+
+
+
+
+
+============================================================================
+SI EXISTE ERROR DE NOTICE O WARNING ESTA ES LA SOLUCION:
+============================================================================
+# sudo yum install mlocate	<-- INSTALAR HERRAMIENTA LOCATE
+# updatedb			<-- ACTUALIZAR DB DE LOCATE
+# locate php.ini		<-- BUSCAR RUTA DE ESTRE ARCHIVO
+---------------------------------------------------------------------------
+DENTRO DE "php.ini" BUSCAR "error_reporting"
+---------------------------------------------------------------------------
+...
+error_reporting=E_ALL & ~E_DEPRECATED		<-- MODIFICAR ESTA LINEA
+...
+---------------------------------------------------------------------------
+ASI DEBE QUEDAR ESA LINEA:
+error_reporting=E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE	
+---------------------------------------------------------------------------
