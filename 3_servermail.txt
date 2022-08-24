@@ -43,7 +43,7 @@ unknown_local_recipient_reject_code = 550	--> LO COMENTAMOS
 
 #home_mailbox = Maildir/			--> ASI DEBE ESTAR
 
-=====================RESUMEN========================
+############################# RESUMEN ################################
 myhostname = correo.empresa.com
 mydomain = empresa.com
 myorigin = $mydomain
@@ -53,4 +53,4 @@ mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 unknown_local_recipient_reject_code = 550
 mynetworks = 10.20.30.0/28, 127.0.0.0/8
 home_mailbox = Maildir/
-====================================================
+######################################################################
