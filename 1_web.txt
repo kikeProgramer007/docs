@@ -37,4 +37,108 @@
   mysql> GRANT ALL PRIVILEGES ON dbproductos.* TO 'enrique'@'localhost';    -->OTORGAR TODOS LOS PERMISOS AL USUARIO
   mysql> FLUSH PRIVILEGES;           -		->EJECUTAR DICHOS PRIVILEGIOS
   mysql>exit            			--> PARA SALIR DE MARIADB
+===================================================================================
+  INSTALAR PHP 8.0.18(V_ULTIMATE):
+
+  # sudo yum update         -->PARA ACTUALIZAR PAQUETES (BUENA PRACTICA DE PROG.)
+  # sudo yum install -y php -->INSTALAR PHP(CON ESO EL SERVIDOR RECONOCERÁ PHP)  
+  Complete!                 -->MENSAJE DE INSTALACION COMPLETADA
+
+  # sudo systemctl start php-fpm          --> PARA INICIAR LOS SERVICIOS PHP 
+  # sudo systemctl enable --now php-fpm   -->SIEMPRE ACTIVO(INICIO AUTOMATICO)
+===================================================================================
+  CREAMOS LA INFORMACION DEL PHP INSTALADO
+
+  # pwd  --->MOSTRAR RUTA
+  # cd /var/www/html  -->NOS DIRIGIMOS HACIA ESA RUTA(AHI ESTA NUESTRA PAG.)
+  # sudo systemctl reload httpd    -->REINICIAMOS EL APACHE
+  # vi phpinfo.php                 --> ABRIR Y CREAR ARCHIVO .PHP
+
+  i  -->INICIA LA ESCRITURA
+
+  COLOCAMOS Y COPIAMOS LO SGTE:
+
+  <?php
+    phpinfo();
+  ?>
+
+  PARA SALIR Y GUARDAR:
+  ESC
+  :wq
+
+  PARA COMPROBAR QUE EL PHP ESTE INSTALADO
+  DESDE EL NAV. ENTRAMOS A :http://localhost/phpinfo.php
+
+===================================================================================
+  INSTALAR PHPMYADMIN:
+
+  # sudo yum update                  -->VERIFICAMOS Q LOS PEQUETES ESTEN ACTUALIZADOS
+  # sudo yum install -y phpmyadmin   -->PARA INSTALANDO PhpMyAdmin 
+   ¡Listo!                           -->INSTALACION COMPLETA
+  # sudo systemctl reload httpd      -->REINICIAR APACHE
+
+   LISTO SE INSTALÓ!!!
+--------------------------------------------------------------------------------------
+ACCESO REMOTO A phpMyAdmin (CONFIGURACION PARA ACCEDER AL phpMyAdmin DESDE LA RED WEB)
+
+  # sudo vi /etc/httpd/conf.d/phpMyAdmin.conf  -->ABRIMOS ESA CONFIGURACION DE ESA RUTA
+
+ AHORA UBICAMOS ESTE BLOQUE DE COMANDO:
+
+  <Directory /usr/share/phpMyAdmin/>
+     AddDefaultCharset UTF-8
+     Require local
+  </Directory>
+
+  i -->PARA PODER ESCRIBIR
+  Y AHORA COLOCAMOS ESAS DOS LINEAS EN ESE BLOQUE:
+
+  <Directory /usr/share/phpMyAdmin/>
+     AddDefaultCharset UTF-8
+     #Require local
+     Require all granted
+  </Directory>
+
+  SALIMOS DEL EDITOR
+  ESC
+  :wq   --->salir y guardar cambios
+  :q!   --->salir sin guardar (si haces un error)
+
+  #sudo systemctl restart httpd   -->REINICIAR SERVICIOS DE APACHE
+
+  LISTO!!!
+  AHORA INGRESA A SGTE ENLACE EN NAVEGADOR PARA VER SI FUNCIONA:
+  https://localhost/phpmyadmin/
+
+===================================================================================
+  INSTALAR GIT Y SUBIR PROYECTO:
+
+  # sudo dnf upgrade --refresh -y	-->REVISAR Q paquetes existentes estén actualizados
+  # sudo dnf install git -y		-->INSTALAR GIT
+  $ git --v				-->GIT COMANDOS DISPONIBLES
+  $ git --version			-->GIT VERSION
+--------------------------- CLONAR REPOSITORIO -------------------------------
+  # cd /var/www/html
+  # git clone https://github.com/kikeProgramer007/crudpersonaTW.git
+  # cd crudpersonaTW
+  # mv * /var/www/html
+  # cd ..
+  # sudo rm -r CrudphpPuroTecnoweb
+  # ls -l -a
+
+
+  vi scripTables.txt     -->COPIAR SCRIP AL PHPMYADMIN DENTRO DE LA BASE DE DATOS Q TENEMOS
+  ESC
+  :q!			 -->Salir sin guardar
+  :wq                    -->salir y guardar cambios
+
+
+--------------------------- INSTALACION DE FIREWALL (CORTAFUEGO) -------------------------------
+sudo firewall-cmd --add-service={http,https} --permanent		-->INSTALAR
+sudo firewall-cmd --reload						-->RECARGAR FIREWALL
+# sudo systemctl restart httpd		-->REINICIAR APACHE
+
+Probar con http://10.0.2.4/phpmyadmin desde la otra maquina
+
+ FIN...................
 
