@@ -138,23 +138,35 @@ echo "Mensaje" | mail -s "Asunto" ana@correo.empresa.com	--> ENVIA EL MENSAJE Y 
 
 
 ===========================================================================================
-(CONFIGURACION OPCIONAL) EN MAIN.CF COLOCAR EN LA PARTE FINAL
+(CONFIGURACION OPCIONAL) CONF PARA Q AL CREAR USUARIO SE CREE SU CARPETA Maildir AUTOMATICA.
 ===========================================================================================
-smtpd_sasl_type = dovecot
-smtpd_sasl_path = private/auth
-smtpd_sasl_auth_enable = yes
-smtpd_sasl_security_options = noanonymous
-smtpd_sasl_local_domain = $myhostname
-smtpd_client_restrictions = permit_mynetworks, reject_unknown_client, permit
-smtpd_recipient_restrictions = permit_mynetworks, permit_auth_destination, permit_sasl_authenticated, reject_unauth_destination
+# mkdir /etc/skel/Maildir 		--> Para crear la carpeta
+# nano /etc/skel/.muttrc		--> Para que el proceso mutt pueda leer el contenido de Maildir
 
+COPIAR Y PEGAR DENTRO DEL ARCHIVO ".muttrc":
 
+set mbox_type=Maildir
+set folder=”~/Maildir”
+set mask=”!^\\.[^.]“
+set mbox=”~/Maildir”
+set record=”+.Sent”
+set postponed=”+.Drafts”
+set spoolfile=”~/Maildir”
 
+GUARDAMOS CON CTRL + X LUEGO S Y ENTER.
+-------------------------------------------------------------------------------------------
+NUEVA MANER DE CREAR NUEVO USUARIO
+-------------------------------------------------------------------------------------------
+# adduser administrador
+# passwd administrador
+   Nueva Contraseña: administrador
+   Vuelva a escribir la contraseña: administrador
+# chown pedro:administrador -R /home/pedro/Maildir		--> OTORGAR PERMISOS A USUARIO
 
 ===========================================================================================
 
 
 
 
-
+BUSCAR LA MANERA DE QUE DOVECOT 100 PRE ESTE ACTIVO
 
