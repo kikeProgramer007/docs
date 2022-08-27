@@ -1,0 +1,254 @@
+$sudo su
+ password:
+------------------- CONFIGURACIONES E INSTALACIONES AL SERVIDOR---------------------------
+- ACTUALIZAR SISTEMA OPERATIVO:
+  $ sudo apt update
+  $ sudo apt upgrade
+    Y	      
+-------------------------------------------------------------------------------------------
+- INSTALAR APACHE
+  $ sudo apt install -y apache2
+  $ systemctl status apache2			-->VER ESTADO DEL SERVICIO
+    q
+
+_ YA INSTALADO APACHE SE NOS CREA ESTA RUTA PARA INSERTAR WEB:
+  $ cd /var/www/html				      -->RUTA PARA INSERTAR PROYECTOS WEB
+  $ sudo chown www-data:www-data /var/www/html/ -R    -->PERMITIR ACCESO A ESTAS CARPETAS
+  $ ls -l					      -->VER CONTENIDO
+-------------------------------------------------------------------------------------------
+- INSTALAR MARIADB
+  $ cd
+  $ sudo apt install mariadb-server		       -->INSTALAR MARIA DB
+    Y						       -->CONFIRMAR INSTALACIÓN				      	
+  $ systemctl status mariadb 			       -->ESTADO DE LA INSTALACIÓN		      	
+    q 						       -->PARA SALIR
+  $ sudo mysql_secure_installation 	               -->INSTALACION SEGURA DE MARIADB
+    *Enter current password for root (enter for none): -->PRESIONAMOS ENTER
+    *Set root password? [Y/n]			       --> Y 
+    *New password:123456789			       -->COLOCAMOS UNA CONTRASEÑA
+    *Re-enter new password:123456789		       -->CONFIRMAMOS CONTRASEÑA
+    *Remove anonymous users? [Y/n]		       --> Y ->ELIMINAR USUARIOS ANONIMOS
+    *Disallow root login remotely? [Y/n]	       --> N ->DESABILITAR EL INICIO DE SESION DE FORMA REMOTA.
+    *Remove test database and access to it? [Y/n]      --> Y ->¿ELIMINAR LA BD DE PRUEBA Y ACCEDERA A ELLA?
+    *Reload privilege tables now? [Y/n]		       --> Y ->¿ACTUALIZAR TABLA DE PRIVILEGIOS AHORA?
+  
+  COMPROBAR SI LA INSTALCIÓN
+  $ sudo mysql -u root -p			       -->VERIFICAR QUE LO HICIERON BIEN
+    password:123456789
+    
+    MariaDB [(none)]> select 3*7;
+    exit;					       -->PARA SALIR DE MARIADB
+-------------------------------------------------------------------------------------------------------------------------------
+- IMPLEMENTAR PAQUETES DE PHP 7.4		
+  >EL SGTE COMANDO INSTALARÁ TODOS LOS PAQUETES NECESARIOS PARA TRABAJAR CON PHP
+  
+  $ sudo apt install -y php			-->INSTALAR LOS PAQUETES PHP
+  $ php -v					-->VERSION DE PHP
+  $ sudo a2enmod php7.4				-->ACTIVAR  PHP7
+  $ sudo systemctl restart apache2		-->REINICIAR APACHE
+-------------------------------------------------------------------------------------------------------------------------------
+- INSTALAR LO NECESARIO PARA CORRER LARAVEL
+
+
+  $ sudo apt install -y git				-->INSTALAR TERMINAL GIT
+  $ sudo apt install -y curl				-->INSTALAR TERMINAL CURL
+  $ curl -sS https://getcomposer.org/installer | php    -->INSTALAR COMPOSER
+  $ sudo mv composer.phar /usr/local/bin/composer 	-->MOVER A SU LUGAR CORRECTO DE INSTALACION
+  $ sudo chmod +x /usr/local/bin/composer		-->LO VOLVEMOS EJECUTABLE
+  $ composer --version					-->REVISAMOS LA VERSION
+
+-------------------------------------------------------------------------------------------------------------------------------
+- INSTALAR PHPMYADMIN
+
+  $ sudo apt install phpmyadmin
+    Y
+     Web server to reconfigure automatically
+      [*] apache2					-->PRESIONAMOS TECLADO "Espacio" PARA MARCAR
+      [ ] lighttpd
+	
+     <aceptar>	-->PRESIONAR ENTER
+	
+     Configure database for phpmyadmin with dbconfig-common?
+	<Yes>						-->PRESIONAMOS ENTER EN "Yes"
+
+     MySQL application password for phpmyadmin:
+      123456789						-->INGRESAMOS LA MISMA CONTRASEÑA DE MARIADN Y LUEGO ENTER
+     Password confirmation:
+      123456789						-->CONFIRMAMOS CONTRASEÑA
+--------------------------------------------------------------------------------------------------------------------------------
+- CONFIGURAR PHPMYADMIN
+  $ sudo mariadb -u root -p				-->LOGUEA A MARIADB CON ROOT 
+    Enter password:123456789
+    MariaDB [(none)]> use mysql;			-->USAR BD mysql
+    MariaDB [mysql]> update user set authentication_string=PASSWORD("123456789") where user = 'root';
+    MariaDB [mysql]> update user set plugin='mysql_native_password' where user='root';
+    MariaDB [mysql]> flush privileges;			-->EJECUTAR PRIVILEGIOS
+    MariaDB [mysql]> exit;				-->SALIR
+--------------------------------------------------------------------------------------------------------------------------------
+- IR A VER LA NUESTRO TRABAJO EN EL PHPMYADMIN:
+  http://**.***.***.***/phpmyadmin/		--> PONER NUESTRA IP EXTERNA HE INSERTAR EN EL NAVEGADOR 
+  
+--------------------------------------------------------------------------------------------------------------------------------
+- USO DE GIT PARA SUBIR PROYECTO:
+  $ git --v								    -->GIT COMANDOS DISPONIBLES
+  $ git --version							    -->GIT VERSION
+ 
+  # sudo su								    -->CAMBIAMOS MODO ADMINISTRADOR
+  # sudo chown -R $USER:root /var/www					    -->DAR PERMISOS AL ROOT
+  # cd /var/www/html							    -->IR A ESA RUTA 
+  # rm -r *								    -->ELIMINAR TODO DE ESTE DIRECTORIO
+  # git clone https://github.com/kikeProgramer007/enviarcorreolaravel8.git  -->CLONAR PROYECTO DESDE GITHUB	
+
+  
+    *SI EL REPOSITORIO ESTA EN PRIVADO TE PIDE LA CUENTA GITHUB:
+      Username for 'https://github.com':USUARIO
+      Password for 'https://kikeProgramer007@github.com': CONTRASEÑA
+
+  # cd enviarcorreolaravel8
+  # mv * /var/www/html							-->MOVER TODOS LOS ARCHIVOS A ESA RUTA
+  # mv .* /var/www/html							-->MOVER TODOS LOS ARCHIVOS OCULTOS A ESA RUTA
+  # cd /var/www/html	 						-->ATRAS
+  # ll									-->VER ARCHIVOS  
+  # rm -r enviarcorreolaravel8						-->ELIMINAR CARPETA VACIA
+  # ls -a -l								-->MOSTRAR TODOS LOS ARCHIVOS DEL PROYECTO LARAVEL
+  # composer install							-->INSTALAR EL LARAVEL.
+ 
+   *SI TUBO PROBLEMAS "composer install" ENTONCES INTENTALO CON EL SGTE COMANDO:
+  # composer update
+ 				
+  # cd /var/www/html							-->SE DEBE ESTAR ES ESA RUTA
+  # sudo mv server.php index.php					-->CAMBIAR EL NOMBRE AL ARCHIVO INICIAL
+  # sudo chmod -R 755 /var/www/html					-->PERMISOS DE ACCESO A CARPETA HTML
+  # sudo chmod -R 755 storage						-->PERMISOS DE ACCESO A CARPETA "storage"
+    systemctl restart apache2
+  # sudo a2enmod rewrite
+  # sudo nano /etc/apache2/apache2.conf					-->ABRIMOS EL ARCHIVO DE CONFIGURACION
+    
+  COPIAMOS Y PEGAMOS ESTE DIRECTORIO PARA QUE LOS USER ACCEDAN:  
+  COLOCARLO DEBAJO DE LOS DEMAS DIRECTORIOS
+ 
+-----------------------(COPIA LO DE ADENTRO)-------------------------
+
+    <Directory /var/www/html/>
+     Options Indexes FollowSymLinks
+     AllowOverride all
+     Require all granted
+    </Directory>
+
+------------------------------------------------------------------  
+  PARA GUARDAR CAMBIOS PRESIONAMOS:
+   Ctrl+x
+   Y
+   Enter
+
+  # cd /var/www/html			-->IR A ESA RUTA
+  # sudo nano .htaccess			-->CREAMOS Y ABRIMOS ESE ARCHIVO
+    COPIAMOS Y PEGAMOS TODO ESTE BLOQUE DE CODIGO:
+
+-----------------------(COPIA LO DE ADENTRO)-------------------------
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.)/$ /$1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule . - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+
+------------------------------------------------------------------  
+  PARA GUARDAR CAMBIOS PRESIONAMOS:
+   Ctrl+x
+   Y
+   Enter
+
+------------------------------------------------------------------ 
+- CONFIGURAR EL ARCHIVO .ENV
+  # sudo cp .env.example .env			-->COPIAR Y CAMBIAR EL NOMBRE
+  # sudo php artisan key:generate		-->IMPORTANTE EJECUTAR ESTE COMANDO(PARA EVITAR PROBLEMAS)
+  # sudo nano .env				-->ABRIMOS EL ARCHIVO
+
+    COPIAMOS Y PEGAMOS (LO PEGAMOS DEBAJO DE APP_URL=..):
+
+    -----------------------(COPIA LO DE ADENTRO)----------------------
+     ASSET_URL=/public
+    ------------------------------------------------------------------ 
+    CONFIGURAMOS LA BASE DE DATOS EJEMPLO:
+     ....
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=empresa
+     DB_USERNAME=root
+     DB_PASSWORD=123456789
+     ...
+    PARA GUARDAR CAMBIOS PRESIONAMOS:
+     Ctrl+x
+     Y
+     Enter
+-----------------------------------------------------------------------------
+- CONTINUANDO CON LAS CONGIGURACIONES
+  
+  # cd /var/www/html
+  # sudo php artisan storage:link		-->CREAR ENLACE DE STORAGE
+  # sudo php artisan config:cache		-->LIMPIAR CACHÉ
+  # sudo systemctl restart apache2		-->REINICIAR SERVIDOR APACHE
+
+-----------------------------------------------------------------------------
+- CREAR LA BASE DE DATOS EN PHPMYADMIN:
+   http://35.202.111.167/phpmyadmin      -->IR A ESTE ENLACE CON EL NAVEGADOR
+   (Creamos la base de datos con el mismo nombre "empresa")
+-----------------------------------------------------------------------------
+- VOLVEMOS A LA TERMINAL:
+
+  # php artisan migrate:fresh --seed		-->MIGRAR TABLAS A BASE DE DATOS
+
+LISTO!!!! 
+
+AHORA ENTRA A TU IP: http://35.202.111.167/
+  
+
+----------------------------------- FIN PASO 3 -----------------------------------------------------------------
+
+SI OCURRE UN ERROR
+
+EN EL VIDEO 29:20 sudo chown -R $USER:root /var/www
+
+-------------------------------------------------------
+COMANDO ESENCIALES:
+sudo php artisan config:cache		-->
+sudo systemctl restart apache2		--> REINICIAR APACHE
+sudo php artisan cache:clear		--> LIMPIAR CACHE
+$ ls -a -l  				--> MOSTRAR TODOS LOS ARCHIVOS TAMBIÉN LOS OCULTOS
+-------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
