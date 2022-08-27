@@ -195,10 +195,22 @@ _ YA INSTALADO APACHE SE NOS CREA ESTA RUTA PARA INSERTAR WEB:
      DB_USERNAME=root
      DB_PASSWORD=123456789
      ...
-    PARA GUARDAR CAMBIOS PRESIONAMOS:
-     Ctrl+x
-     Y
-     Enter
+     # CONFIGURACION PARA EL SERVIDOR FEDORA
+     ...
+     MAIL_MAILER=smtp
+     MAIL_HOST=correo.empresa.com
+     MAIL_PORT=25
+     MAIL_USERNAME=contacto@empresa.com
+     MAIL_PASSWORD=contacto
+     MAIL_ENCRYPTION=null
+     MAIL_FROM_ADDRESS=contacto@empresa.com
+     MAIL_FROM_NAME="Contacto-Empresa"
+     ...
+
+  PARA GUARDAR CAMBIOS PRESIONAMOS:
+  Ctrl+x
+  Y
+  Enter
 -----------------------------------------------------------------------------
 - CONTINUANDO CON LAS CONGIGURACIONES
   
