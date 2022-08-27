@@ -191,7 +191,7 @@ _ YA INSTALADO APACHE SE NOS CREA ESTA RUTA PARA INSERTAR WEB:
      DB_CONNECTION=mysql
      DB_HOST=127.0.0.1
      DB_PORT=3306
-     DB_DATABASE=empresa
+     DB_DATABASE=db_empresa
      DB_USERNAME=root
      DB_PASSWORD=123456789
      ...
@@ -215,13 +215,14 @@ _ YA INSTALADO APACHE SE NOS CREA ESTA RUTA PARA INSERTAR WEB:
 - CONTINUANDO CON LAS CONGIGURACIONES
   
   # cd /var/www/html
+  # sudo chown www-data:www-data /var/www/html/ -R
   # sudo php artisan storage:link		-->CREAR ENLACE DE STORAGE
   # sudo php artisan config:cache		-->LIMPIAR CACHÉ
   # sudo systemctl restart apache2		-->REINICIAR SERVIDOR APACHE
 
 -----------------------------------------------------------------------------
 - CREAR LA BASE DE DATOS EN PHPMYADMIN:
-   http://35.202.111.167/phpmyadmin      -->IR A ESTE ENLACE CON EL NAVEGADOR
+   http://localhost/phpmyadmin      -->IR A ESTE ENLACE CON EL NAVEGADOR
    (Creamos la base de datos con el mismo nombre "empresa")
 -----------------------------------------------------------------------------
 - VOLVEMOS A LA TERMINAL:
@@ -235,10 +236,9 @@ AHORA ENTRA A TU IP: http://35.202.111.167/
 
 ----------------------------------- FIN PASO 3 -----------------------------------------------------------------
 
-SI OCURRE UN ERROR
-
-EN EL VIDEO 29:20 sudo chown -R $USER:root /var/www
-
+SI OCURRE UN ERROR EJECUTAR
+sudo chown -R $USER:root /var/www
+chown www-data:www-data /var/www/html/ -R
 -------------------------------------------------------
 COMANDO ESENCIALES:
 sudo php artisan config:cache		-->
