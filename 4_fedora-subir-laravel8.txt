@@ -1,0 +1,154 @@
+==================================================================================
+CREAR BASE DE DATOS DE MY SQL:
+==================================================================================
+  # mysql -u root                		-->ABRIR MYSQL
+
+  mysql> SHOW databases;                	-->MUESTRA LAS BASE DE DATOS
+  mysql> CREATE DATABASE dbpanaderia;   		-->CREAMOS UNA BASE DE DATOS CON NOMBRE dbpersonal
+  mysql> CREATE USER 'enrique'@'localhost' IDENTIFIED BY '12345';   	   -->CREAMOS UN USUARIO MAS SU CONTRASEÑA
+  mysql> GRANT ALL PRIVILEGES ON dbempleados.* TO 'enrique'@'localhost';    -->OTORGAR TODOS LOS PERMISOS AL USUARIO
+  mysql> FLUSH PRIVILEGES;           -		->EJECUTAR DICHOS PRIVILEGIOS
+  mysql>exit            			--> PARA SALIR DE MARIADB
+==================================================================================
+SUBIR LARAVEL 8 A FEDORA 35 SERVER:
+==================================================================================
+$ sudo su
+# cd /var/www/html							-->IR A ESA RUTA 
+# sudo rm -r *								-->ELIMINAR TODO DE ESTE DIRECTORIO
+# sudo rm -r .*								-->ELIMINAR ARCHIV OCULTOS
+# git clone https://github.com/kikeProgramer007/tu_proyecto.git
+# cd tu_proyecto
+# sudo mv * /var/www/html						-->MOVER TODOS LOS ARCHIVOS A ESA RUTA
+# ls -a -l								-->MOSTRAR LOS ARCHIVOS OCULTOS
+# sudo mv .* /var/www/html						-->MOVER TODOS LOS ARCHIVOS OCULTOS A ESA RUTA
+# cd /var/www/html	 						-->ATRAS
+# ll									-->VER ARCHIVOS  
+# sudo rm -r tu_proyecto							-->ELIMINAR CARPETA VACIA
+# ls -a -l								-->MOSTRAR TODOS LOS ARCHIVOS DEL PROYECTO LARAVEL
+==================================================================================
+INSTALAR COMPOSER:
+==================================================================================
+# sudo dnf upgrade --refresh -y
+# sudo dnf install -y composer			-->INSTALAR COMPOSER
+# composer --version				-->REVISAMOS LA VERSION
+==================================================================================
+CONFIGURAR PARA QUE LARAVEL COMPILE CORRECTAMENTE:
+==================================================================================
+# composer install							-->INSTALAR EL LARAVEL.
+
+ *SI TUBO PROBLEMAS "composer install" ENTONCES INTENTALO CON EL SGTE COMANDO:
+# composer update
+   yes
+
+# sudo chmod -R 755 /var/www/html					-->PERMISOS DE ACCESO A CARPETA HTML
+# sudo chmod -R 755 storage						-->PERMISOS DE ACCESO A CARPETA "storage"
+# sudo chmod -R 755 storage						-->PERMISOS DE ACCESO A CARPETA "storage"
+# sudo chown -R apache:apache /var/www/html
+# chcon -R -t httpd_sys_rw_content_t /var/www/html/storage
+# getsebool httpd_can_network_connect_db			-->VER ESTADO DE PERMISO MYSQL
+# setsebool -P httpd_can_network_connect_db on			-->ACTIVAR PERMISO A MYSQL
+
+# sudo nano /etc/httpd/conf.d/html.conf
+------------------ COPIAR Y PEGAR DENTRO ------------------------
+<VirtualHost *:80>
+       ServerName www.empresa.com
+       DocumentRoot /var/www/html/public
+
+       <Directory /var/www/html>
+              AllowOverride All
+       </Directory>
+</VirtualHost>
+
+-----------------------------------------------------------------
+  PARA GUARDAR CAMBIOS PRESIONAMOS:
+  Ctrl+x
+  Y
+  Enter
+
+
+# cp .env.example .env
+# php artisan key:generate
+# sudo mv server.php index.php					-->CAMBIAR EL NOMBRE AL ARCHIVO INICIAL
+
+# sudo nano .env				-->ABRIMOS EL ARCHIVO
+------------------------------------------------------------------
+COPIAMOS Y PEGAMOS (LO PEGAMOS DEBAJO DE APP_URL=..):
+------------------------------------------------------------------ 
+
+    -----------------------(COPIA LO DE ADENTRO)----------------------
+     ASSET_URL=/public	-->SI LO TIENES QUITALO
+    ------------------------------------------------------------------ 
+    CONFIGURAMOS LA BASE DE DATOS EJEMPLO:
+     ....
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=dbpanaderia
+     DB_USERNAME=enrique
+     DB_PASSWORD=12345
+     ...
+     # CONFIGURACION PARA EL SERVIDOR FEDORA
+     ...
+     MAIL_MAILER=smtp
+     MAIL_HOST=correo.empresa.com
+     MAIL_PORT=25
+     MAIL_USERNAME=contacto@empresa.com
+     MAIL_PASSWORD=contacto
+     MAIL_ENCRYPTION=null
+     MAIL_FROM_ADDRESS=contacto@empresa.com
+     MAIL_FROM_NAME="Contacto-Empresa"
+     ...
+
+  PARA GUARDAR CAMBIOS PRESIONAMOS:
+  Ctrl+x
+  Y
+  Enter
+------------------------------------------------------------------
+  # cd /var/www/html
+  # php artisan migrate:fresh --seed		-->MIGRAR TABLAS A BASE DE DATOS
+
+  @@@@@@@@@@ ARREGLAR REPOSITORIO PARA EVITAR ESTO @@@@@@@@@@
+
+  cd /var/www/html/app/Models
+  sudo /mv repartidor.php Repartidor.php
+  sudo /mv Ingrediente.php ingrediente.php
+
+  cd /var/www/html/app/Http/Controllers
+  sudo /mv Administracion.php administracion.php
+
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  
+  # php artisan migrate:fresh --seed		-->MIGRAR TABLAS A BASE DE DATOS
+
+  # sudo php artisan storage:link		-->CREAR ENLACE DE STORAGE
+  # sudo php artisan config:cache		-->LIMPIAR CACHÉ
+  # sudo systemctl reload httpd		-->REINICIAR SERVIDOR APACHE
+
+
+==================================================================================
+SUBIR IMAGEN A FEDORA:
+==================================================================================
+# sudo chown -R apache:apache var/www/html
+# cd /var/www
+# chcon -R -t httpd_sys_rw_content_t html
+# systemctl restart httpd
+
+==================================================================================
+DAR PERMISO PARA ENVIAR CORREO DESDE FEDORA:
+==================================================================================
+# getsebool httpd_can_network_connect		-->ESTADO
+# setsebool -P httpd_can_network_connect 1	-->ENCENDER
+# setsebool -P httpd_can_network_connect 0	-->APAGAR
+==================================================================================
+
+FIN.....
+
+http://localhost/		--> REALIZAR PEDIDO SIN ERRORES (RED-WAN) 
+http://www.empresa.com		--> PARA ENVIAR CORREO SIN ERRORES (RED-LAN) 
+
+************** SI HAY ERRORES ***************
+# sudo chown -R apache:apache /var/www/html
+
+*********************************************
+
+
