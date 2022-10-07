@@ -14,8 +14,6 @@ SISTEMAS OPERATIVOS FORMATO ISO:
 Ubuntu 20.04.4 LTE : https://releases.ubuntu.com/20.04/
 FEDORA SERVER 36: https://getfedora.org/es/server/download/
 
-
-
 ==================== 1RA CONFIGURACION =====================
 nano /etc/hosts
 ==================================================================== 
